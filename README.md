@@ -220,9 +220,9 @@ Through this project I gained practical experience with:
 
 # 👨‍💻 Author
 
-**Abinaya Karthikeyan**
+**Annie Rubha V**
 
-Biomedical Engineering Undergraduate | Cloud & DevOps Enthusiast
+Electronics and Communication Engineering Undergraduate | Cloud & DevOps Enthusiast
 
 GitHub: https://github.com/Annie6105
 
