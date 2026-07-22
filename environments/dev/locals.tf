@@ -1,23 +1,24 @@
-# environments/dev/locals.tf
-# ─────────────────────────────────────────────────────────────
-# Locals: valores calculados y reutilizables en este environment.
-# Centralizan el naming convention del proyecto.
-# ─────────────────────────────────────────────────────────────
+# ============================================================
+# CloudSync – Environment Locals
+# ============================================================
 
 locals {
-  project_name = "event-pipeline"
-  environment  = "dev"
 
-  # Naming convention: proyecto-ambiente-recurso
-  bucket_name = "${local.project_name}-${local.environment}-input-${var.aws_account_id}"
+  project_name = "cloudsync"
 
-  # Tags aplicados a todos los recursos del environment
+  environment = "dev"
+
+  # Upload bucket
+  uploads_bucket_name = "${local.project_name}-${local.environment}-uploads-${var.aws_account_id}"
+
+  # Processed bucket
+  processed_bucket_name = "${local.project_name}-${local.environment}-processed-${var.aws_account_id}"
+
   common_tags = {
-    Project     = local.project_name
+    Project     = "CloudSync"
     Environment = local.environment
-    ManagedBy   = "terraform"
-    Owner       = "emmanuel-ledesma"
-    Repository  = "github.com/EmmaLedesma/terraform-event-pipeline"
+    ManagedBy   = "Terraform"
+    Repository  = "cloudsync-serverless-file-processing"
   }
+
 }
-# trigger CI

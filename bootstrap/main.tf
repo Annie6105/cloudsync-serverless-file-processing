@@ -11,13 +11,13 @@ terraform {
 
 provider "aws" {
   region  = "us-east-1"
-  profile = "terraform-pipeline"   
+  profile = "terraform-pipeline"
 }
 
 # ── S3 Bucket para guardar el state remoto ──────────────────
 resource "aws_s3_bucket" "terraform_state" {
   # IMPORTANTE: los bucket names son globales en AWS.
-  
+
   bucket = "tf-state-emmanuel-ledesma-2026"
 
   # Protección: evita borrar el bucket con terraform destroy
@@ -26,9 +26,9 @@ resource "aws_s3_bucket" "terraform_state" {
   }
 
   tags = {
-    Name        = "Terraform State Bucket"
-    Project     = "terraform-event-pipeline"
-    ManagedBy   = "terraform-bootstrap"
+    Name      = "Terraform State Bucket"
+    Project   = "terraform-event-pipeline"
+    ManagedBy = "terraform-bootstrap"
   }
 }
 
