@@ -16,15 +16,13 @@ terraform {
     }
   }
 
- # ── Remote backend ────────────────────────────────────────
+  # ── Remote backend ────────────────────────────────────────
   backend "s3" {
-    bucket         = "tf-state-emmanuel-ledesma-2026"
+    bucket         = "cloudsync-tf-state-991232066873"
     key            = "dev/terraform.tfstate"
     region         = "us-east-1"
     dynamodb_table = "tf-state-lock"
     encrypt        = true
-    # Sin profile — en CI usa AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY
-    # En local usa el perfil configurado en AWS CLI via env var
   }
 }
 
@@ -40,25 +38,16 @@ provider "aws" {
 module "compute" {
   source = "../../modules/compute"
 
-  project_name      = local.project_name
-  environment       = local.environment
-  sqs_queue_url     = module.messaging.sqs_queue_url
-  sqs_queue_arn     = module.messaging.sqs_queue_arn
-  sns_topic_arn     = module.messaging.sns_topic_arn
-  source_bucket_arn = module.storage.bucket_arn
-  tags              = local.common_tags
+  project_name = local.project_name
+  environment  = local.environment
+
+  source_bucket_arn     = module.storage.uploads_bucket_arn
+  processed_bucket_arn  = module.storage.processed_bucket_arn
+  processed_bucket_name = local.processed_bucket_name
+  tags                  = local.common_tags
 }
 
-# ── Módulo 2: Messaging (SQS + SNS) ─────────────────────────
-module "messaging" {
-  source = "../../modules/messaging"
 
-  project_name       = local.project_name
-  environment        = local.environment
-  lambda_role_arn    = module.compute.lambda_role_arn
-  notification_email = var.notification_email
-  tags               = local.common_tags
-}
 
 # ── Módulo 3: Storage (S3 + trigger) ────────────────────────
 # Se declara último porque necesita el lambda_arn
@@ -66,7 +55,9 @@ module "messaging" {
 module "storage" {
   source = "../../modules/storage"
 
-  bucket_name          = local.bucket_name
+  uploads_bucket_name   = local.uploads_bucket_name
+  processed_bucket_name = local.processed_bucket_name
+
   enable_versioning    = var.enable_versioning
   lambda_arn           = module.compute.lambda_arn
   lambda_permission_id = module.compute.lambda_permission_id

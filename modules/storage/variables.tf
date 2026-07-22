@@ -1,40 +1,43 @@
-# modules/storage/variables.tf
+variable "uploads_bucket_name" {
+  description = "Name of the uploads S3 bucket"
+  type        = string
+}
 
-variable "bucket_name" {
-  description = "Nombre único global del bucket S3"
+variable "processed_bucket_name" {
+  description = "Name of the processed S3 bucket"
   type        = string
 }
 
 variable "enable_versioning" {
-  description = "Habilitar versioning en el bucket"
+  description = "Enable versioning"
   type        = bool
   default     = false
 }
 
 variable "lambda_arn" {
-  description = "ARN de la Lambda que procesa los eventos S3"
+  description = "Lambda ARN"
   type        = string
 }
 
 variable "lambda_permission_id" {
-  description = "ID del permiso Lambda (para depends_on implícito)"
+  description = "Lambda permission ID"
   type        = string
 }
 
 variable "trigger_prefix" {
-  description = "Prefijo de objetos que disparan la Lambda (ej: 'uploads/')"
+  description = "Trigger prefix"
   type        = string
   default     = ""
 }
 
 variable "trigger_suffix" {
-  description = "Sufijo de objetos que disparan la Lambda (ej: '.json')"
+  description = "Trigger suffix"
   type        = string
   default     = ""
 }
 
 variable "tags" {
-  description = "Tags comunes aplicados a todos los recursos"
+  description = "Common tags"
   type        = map(string)
   default     = {}
 }
